@@ -2,7 +2,7 @@
   "name": "voting-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://husam79.github.io/voting-app",
+  "homepage": "https://creative-baklava-6e0089.netlify.app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
