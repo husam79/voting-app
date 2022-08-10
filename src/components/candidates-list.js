@@ -5,6 +5,8 @@ export default function CandidatesList({ candidates, onSelectionChanged }) {
     const [editCandidates, setEditCandidates] = useState(candidates);
 
     useEffect(() => {
+        console.log(candidates.length)
+        alert(candidates.length)
         setEditCandidates(candidates);
     }, [candidates]);
 
