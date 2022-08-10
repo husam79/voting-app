@@ -47,7 +47,7 @@ const styles = {
     container: {
         flexDirection: 'column',
         display: 'flex',
-        height: '80vh',
+        height: '70vh',
         overflow: 'auto',
         borderColor: 'gray',
         borderWidth: 1,
