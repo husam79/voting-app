@@ -11,9 +11,9 @@ export default function CandidatesList({ candidates, onSelectionChanged }) {
     const handleChecked = (id, isChecked) => {
         let selectedGroup = editCandidates.filter(item => item.is_selected);
 
-        //prevent selection more than 3 candidates, 
+        //prevent to select more than 7 candidates, 
         //but allow to deselect any candidate.
-        if(selectedGroup.length === 3 && isChecked){
+        if(selectedGroup.length === 7 && isChecked){
             return;
         }
 
@@ -62,7 +62,6 @@ const styles = {
         alignItems: 'center',
         boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
         borderRadius: 4,
-        margin: 8,
-        backgroundColor:'gray'
+        margin: 8
     }
 }

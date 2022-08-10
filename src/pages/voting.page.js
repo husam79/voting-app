@@ -8,7 +8,7 @@ export default function VotingPage() {
     const [enableVoting, setEnableVoting] = useState(false);
 
     const handleSelectionChanged = (group) => {
-        setEnableVoting(group.length === 3);
+        setEnableVoting(group.length <= 7 && group.length > 0);
     }
 
     useEffect(() => {
