@@ -19,11 +19,10 @@ export default function dataStore() {
                 password
             })
         }) */
-        const response = await axios.post(url,{
+        const response = await axios.post(url, {
             username,
             password
         });
-
 
         return (response.status === 200);
     }
@@ -35,12 +34,17 @@ export default function dataStore() {
             credentials: 'include'
         });
  */
-        const response = await axios.get(url);
+        try {
+            const response = await axios.get(url);
 
-        if (response.status === 200) {
-            return response.data;
-        } else {
-            return [];
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return [];
+            }
+        }
+        catch (err) {
+            console.log(err)
         }
 
     }
