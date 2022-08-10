@@ -49,5 +49,25 @@ export default function dataStore() {
 
     }
 
-    return { login, getAllCandidatesAsync }
+    const voteAsync = async (selected_candidates) => {
+        const url = API_ENDPOINT + '/voting/vote'
+        
+        try {
+            const response = await axios.post(url, {
+                selected_candidates: selected_candidates
+            });
+
+            if (response.status === 201) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+
+    return { login, getAllCandidatesAsync, voteAsync }
 } 
