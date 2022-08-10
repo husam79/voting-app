@@ -62,6 +62,7 @@ const styles = {
         alignItems: 'center',
         boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
         borderRadius: 4,
-        margin: 8
+        margin: 8,
+        backgroundColor:'gray'
     }
 }

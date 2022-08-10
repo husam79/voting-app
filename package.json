@@ -2,7 +2,7 @@
   "name": "voting-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://creative-baklava-6e0089.netlify.app",
+  "homepage": "https://voting-app-mq5c.onrender.com/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
