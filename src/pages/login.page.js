@@ -48,6 +48,10 @@ export default function LoginPage() {
                             <label htmlFor="password" className="form-label">كلمة المرور</label>
                             <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
+                        <button className="btn btn-primary" type="button" disabled={isLoading}>
+                            {isLoading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+                            <span className="visually-hidden">Loading...</span>
+                        </button>
                         <button disabled={isLoading} className="btn btn-primary">دخول</button>
                     </div>
                 </div>
@@ -61,16 +65,16 @@ let styles = {
         width: '100vw',
         height: '100vh',
         display: 'flex',
-        flexDirection:'column',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#eee'
     },
     login: {
-        width: '300px',        
+        width: '300px',
         textAlign: 'right'
     },
-    header:{
+    header: {
         marginBottom: 32
     }
 }

@@ -41,7 +41,7 @@ export default function HomePage() {
                         </div>
                     </div>
 
-                    <div style={{ fontSize: '1.2rem' }} className="mt-4">لقد اخترت السادة التالية أسماؤهم:</div>
+                    <div style={{ fontSize: '1.2rem' }} className="mt-4">لقد اخترت المرشحين التالية أسماؤهم:</div>
                     <ul style={{ fontSize: '1.2rem' }}>
                         {selectedCandidates.map(item => <li>{item.full_name}</li>)}
                     </ul>
