@@ -48,11 +48,11 @@ export default function LoginPage() {
                             <label htmlFor="password" className="form-label">كلمة المرور</label>
                             <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
-                        <button className="btn btn-primary" type="button" disabled={isLoading}>
+
+                        <button class="btn btn-primary" type="submit" disabled={isLoading}>
                             {isLoading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-                            <span className="visually-hidden">Loading...</span>
+                            &nbsp;دخول
                         </button>
-                        <button disabled={isLoading} className="btn btn-primary">دخول</button>
                     </div>
                 </div>
             </form>
