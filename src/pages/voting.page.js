@@ -1,47 +1,84 @@
 import { useEffect, useState } from "react";
 import CandidatesList from "../components/candidates-list";
 import dataStore from '../dataStore';
+import { useNavigate } from "react-router-dom";
 
 export default function VotingPage() {
-    const { getAllCandidatesAsync } = dataStore();
+    const { getAllCandidatesAsync, voteAsync, getSelectedCandidatesAsync } = dataStore();
     const [candidates, setCandidates] = useState([]);
-    //const [enableVoting, setEnableVoting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showContent, setShowContent] = useState(false);
     const [selectedCandidates, setSelectedCandidates] = useState([]);
+    const navigate = useNavigate()
 
     const handleSelectionChanged = (group) => {
         setSelectedCandidates(group);
     }
 
-    useEffect(() => {
-        const getAll = async () => {
-            const results = await getAllCandidatesAsync();
+    const handleVoteNow = async () => {
+        let result = await voteAsync(selectedCandidates);
 
-            setCandidates(results);
+        if (result) {
+            navigate('/', { replace: true })
         }
+    }
 
-        getAll();
+    useEffect(() => {
+        setIsLoading(true);
+        getSelectedCandidatesAsync()
+            .then((data) => {
+                if (data.length > 0) {
+                    navigate('/', { replace: true })
+                }
+                else {
+                    getAllCandidatesAsync().then((data) => {
+                        if (data.length > 0) {
+                            setCandidates(data);
+                        } else {
+                            alert('no candidates - from voting.page');
+                        }
+                    })
+                }
+
+                setShowContent(true)
+                setIsLoading(false)
+            })
     }, []);
 
     let enableVoting = selectedCandidates.length <= 7 && selectedCandidates.length > 0;
 
     return (
         <div className="container">
-            <div className="row align-items-center justify-content-center mt-4">
-                <div className="col-sm-12 d-md-none mb-4">
-                    <button disabled={!enableVoting} className="btn btn-danger w-100">صوّت الآن</button>
-                </div>
-                <div className="col-lg-4 col-md-6 d-none d-md-block d-flex justify-content-start">
-                    <button disabled={!enableVoting} className="btn btn-danger" style={styles.voteButton}>صوّت الآن</button>
-                </div>
+            {!isLoading && showContent &&
+                <>
+                    <div className="row align-items-center justify-content-center mt-4">
+                        <div className="col-sm-12 d-md-none mb-4">
+                            <button onClick={handleVoteNow} disabled={!enableVoting} className="btn btn-danger w-100">صوّت الآن</button>
+                        </div>
+                        <div className="col-lg-4 col-md-6 d-none d-md-block d-flex justify-content-start">
+                            <button onClick={handleVoteNow} disabled={!enableVoting} className="btn btn-danger" style={styles.voteButton}>صوّت الآن</button>
+                        </div>
 
-                <div className="col-sm-12 col-lg-4 col-md-6 align-self-center">
-                    <div style={{ textAlign: 'center' }} className = {selectedCandidates.length === 7 ? "alert alert-success": "alert alert-secondary"} role="alert">
-                        {selectedCandidates.length > 0 && <span>تمّ اختيار &nbsp;<strong style={{ fontSize: '1.1rem' }}>{selectedCandidates.length}</strong>&nbsp; مرشّح</span>}
-                        {selectedCandidates.length === 0 && <span>لم يتم اختيار أي مرشّح</span>}
+                        <div className="col-sm-12 col-lg-4 col-md-6 align-self-center">
+                            <div style={{ textAlign: 'center' }} className={selectedCandidates.length === 7 ? "alert alert-success" : "alert alert-secondary"} role="alert">
+                                {selectedCandidates.length > 0 && <span>تمّ اختيار &nbsp;<strong style={{ fontSize: '1.1rem' }}>{selectedCandidates.length}</strong>&nbsp; مرشّح</span>}
+                                {selectedCandidates.length === 0 && <span>لم يتم اختيار أي مرشّح</span>}
+                            </div>
+                            <CandidatesList onSelectionChanged={handleSelectionChanged} candidates={candidates} />
+                        </div>
                     </div>
-                    <CandidatesList onSelectionChanged={handleSelectionChanged} candidates={candidates} />
+                </>
+            }
+
+            {isLoading &&
+                <div style={{ height: '90vh' }} className="row align-items-center justify-content-center">
+                    <div className="col-md-4 text-center">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     )
 }
