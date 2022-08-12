@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
-//const API_ENDPOINT = 'http://localhost:3010/api';
+//const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
+const API_ENDPOINT = 'http://localhost:3010/api';
 
 axios.defaults.withCredentials = true;
 
@@ -29,20 +29,7 @@ export default function dataStore() {
     }
 
     const logout = async () => {
-        const url = API_ENDPOINT + '/voters/logout'
-
-        try {
-            const response = await axios.post(url);
-
-            if (response.status === 200) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        catch (err) {
-            console.log(err)
-        }
+        await axios.post(`${API_ENDPOINT}/voters/logout`);
     }
 
     const getAllCandidatesAsync = async () => {
@@ -97,5 +84,18 @@ export default function dataStore() {
         }));
     }
 
-    return { login, logout, getAllCandidatesAsync, voteAsync, getSelectedCandidatesAsync }
+    const getCandidatesResultAsync = async () => {
+        const { data } = await axios.get(`${API_ENDPOINT}/candidates/results`);
+
+        return data;
+    }
+
+    return {
+        login,
+        logout,
+        getAllCandidatesAsync,
+        voteAsync,
+        getSelectedCandidatesAsync,
+        getCandidatesResultAsync
+    }
 } 

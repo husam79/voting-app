@@ -10,6 +10,7 @@ import VotingPage from './pages/voting.page';
 import React, { useEffect, useState } from 'react';
 import LoginPage from './pages/login.page';
 import LogoutPage from './pages/logout.page';
+import ResultsPage from './pages/results.page';
 
 export const UserContext = React.createContext();
 
@@ -34,6 +35,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="vote" element={<VotingPage />} />
+          <Route path="results" element={<ResultsPage />} />
         </Route>
         <Route path="login" element={<LoginPage />} />
         <Route path="logout" element={<LogoutPage />} />

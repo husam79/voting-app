@@ -30,6 +30,9 @@ export default function Navbar({ activeItem }) {
                             <li className="nav-item">
                                 <NavLink to='/vote' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>صوّت الآن</NavLink>
                             </li>
+                            {obj.user !== null && obj.user.is_admin && <li className="nav-item">
+                                <NavLink to='/results' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>النتائج</NavLink>
+                            </li>}
                             <li className="nav-item">
                                 <NavLink to='/about' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>حول</NavLink>
                             </li>

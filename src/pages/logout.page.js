@@ -9,17 +9,18 @@ export default function LogoutPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const doLogout = () => {
-            logout().then(response => {
-                if (response) {
-                    obj.setUser(null);
-                    navigate('/', { replace: true });
-                }
+        logout()
+            .then(() => {
+                obj.setUser(null);
+                navigate('/', { replace: true });
             })
-        }
-
-        doLogout();
-
+            .catch((err) => {
+                console.log('error in logout', err)
+            })
+            .finally(() => {
+                obj.setUser(null);
+                navigate('/', { replace: true });
+            })
     });
 
     return (
