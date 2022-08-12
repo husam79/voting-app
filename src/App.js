@@ -7,23 +7,36 @@ import {
 import HomePage from './pages/home.page';
 import AboutPage from './pages/about.page';
 import VotingPage from './pages/voting.page';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginPage from './pages/login.page';
+import LogoutPage from './pages/logout.page';
 
 export const UserContext = React.createContext();
 
+const usePersistentStorage = (init_value) => {
+  const [data, setData] = useState(() => init_value === null ? JSON.parse(localStorage.getItem('session')) : init_value);
+
+  useEffect(() => {
+    localStorage.setItem('session', JSON.stringify(data));
+  }, [data]);
+
+  return [data, setData]
+}
+
 function App() {
-  const [userId, setUserId] = useState(0);
+
+  const [user, setUser] = usePersistentStorage(null);
 
   return (
-    <UserContext.Provider value={{ userId, setUserId }}>
+    <UserContext.Provider value={{ user, setUser }}>
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
-          <Route path="vote" element={<VotingPage />} />          
+          <Route path="vote" element={<VotingPage />} />
         </Route>
         <Route path="login" element={<LoginPage />} />
+        <Route path="logout" element={<LogoutPage />} />
       </Routes>
     </UserContext.Provider>
   );

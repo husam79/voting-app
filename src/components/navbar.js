@@ -1,10 +1,21 @@
 import '../index.css';
 import { Link, Outlet, NavLink } from "react-router-dom";
+import { useContext, useState } from 'react';
+import { UserContext } from '../App';
 
 export default function Navbar({ activeItem }) {
-    let activeStyle = {
-        backgroundColor: '#555'
+    const [isHover, setIsHover] = useState(false);
+
+    let linkStyle = {
+        fontSize: '0.75rem',
+        padding: 4,
+        textDecoration: 'none',
+        borderRadius: 2,
+        /*textDecoration: isHover ? 'underline' : 'none',*/
+        backgroundColor: isHover ? '#555' : '#212529'
     }
+
+    const obj = useContext(UserContext);
 
     return (
         <>
@@ -15,7 +26,7 @@ export default function Navbar({ activeItem }) {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                        <ul className="navbar-nav me-auto">
                             <li className="nav-item">
                                 <NavLink to='/vote' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>صوّت الآن</NavLink>
                             </li>
@@ -23,6 +34,17 @@ export default function Navbar({ activeItem }) {
                                 <NavLink to='/about' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>حول</NavLink>
                             </li>
                         </ul>
+
+                        <div className='d-flex align-items-center' >
+                            <span className='text-light'>مرحبًا {obj.user !== null ? obj.user.full_name.split(' ')[0] + "!" : ""}</span>
+                            &nbsp;&nbsp;&nbsp;
+                            <Link
+                                onMouseEnter={() => setIsHover(true)}
+                                onMouseLeave={() => setIsHover(false)}
+                                className='text-light'
+                                style={linkStyle}
+                                to="/logout">خروج</Link>
+                        </div>
                     </div>
                 </div>
             </nav>

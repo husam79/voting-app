@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
-//const API_ENDPOINT = 'http://localhost:3010/api';
+//const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
+const API_ENDPOINT = 'http://localhost:3010/api';
 
 axios.defaults.withCredentials = true;
 
@@ -20,12 +20,29 @@ export default function dataStore() {
                 password
             })
         }) */
-        const response = await axios.post(url, {
+        const { data } = await axios.post(url, {
             username,
             password
         });
 
-        return (response.status === 200);
+        return data;
+    }
+
+    const logout = async () => {
+        const url = API_ENDPOINT + '/voters/logout'
+
+        try {
+            const response = await axios.post(url);
+
+            if (response.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     const getAllCandidatesAsync = async () => {
@@ -47,12 +64,11 @@ export default function dataStore() {
         catch (err) {
             console.log(err.message)
         }
-
     }
 
     const voteAsync = async (selected_candidates) => {
         const url = API_ENDPOINT + '/voting/vote'
-        
+
         const selected_ids = selected_candidates.map(item => item.id)
 
         try {
@@ -72,24 +88,14 @@ export default function dataStore() {
 
     }
 
-    const getSelectedCandidatesAsync = async () =>{
-        const url = API_ENDPOINT + '/candidates/of-voter'
+    const getSelectedCandidatesAsync = async () => {
+        const { data } = await axios.get(`${API_ENDPOINT}/candidates/of-voter`);
 
-        try {
-            const response = await axios.get(url);
-
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                alert('problem in getSelectedCandidatesAsync')
-                return [];
-            }
-        }
-        catch (err) {
-            console.log(err)
-            alert('problem in try-catch of getSelectedCandidatesAsync')
-        }
+        return data.map(({ voting_date, ...candidate }) => ({
+            ...candidate,
+            voting_date: new Date(voting_date)
+        }));
     }
 
-    return { login, getAllCandidatesAsync, voteAsync, getSelectedCandidatesAsync }
+    return { login, logout, getAllCandidatesAsync, voteAsync, getSelectedCandidatesAsync }
 } 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { UserContext } from '../App';
 import { useNavigate } from "react-router-dom";
 import dataStore from "../dataStore";
@@ -12,7 +12,7 @@ export default function HomePage() {
     const { getSelectedCandidatesAsync } = dataStore();
 
     useEffect(() => {
-        if (obj.userId === 0) {
+        if (obj.user === null) {
             navigate("login", { replace: true });
         } else {
             setIsLoading(true);
@@ -28,6 +28,10 @@ export default function HomePage() {
                     setShowContent(true)
                     setIsLoading(false)
                 })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => setIsLoading(false))
         }
     }, [])
 
@@ -36,15 +40,17 @@ export default function HomePage() {
             {!isLoading && showContent &&
                 <>
                     <div className="row mt-4 align-items-center justify-content-center">
-                        <div className="col-md-4 text-center">
+                        <div className="col-md-4 text-center alert alert-success" role="alert">
                             <h2>شكرًا لكم للتصويت</h2>
                         </div>
                     </div>
 
-                    <div style={{ fontSize: '1.2rem' }} className="mt-4">لقد اخترت المرشحين التالية أسماؤهم:</div>
-                    <ul style={{ fontSize: '1.2rem' }}>
-                        {selectedCandidates.map(item => <li>{item.full_name}</li>)}
-                    </ul>
+                    <div className="row mt-4 align-items-center justify-content-center">
+                        <div className="col-md-6">
+                            <div style={{ fontSize: '1.2rem' }} className="mt-4 mb-3">لقد اخترت <strong>{selectedCandidates.length}</strong> مرشح:</div>
+                            {selectedCandidates.map(item => <div style={{ fontSize: '1.2rem' }} key={item.id}>{item.full_name}</div>)}
+                        </div>
+                    </div>
                 </>
             }
 

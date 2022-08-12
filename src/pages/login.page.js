@@ -17,18 +17,18 @@ export default function LoginPage() {
 
         setIsLoading(true);
 
-        let response = await login(username, password);
-
-        setIsLoading(false);
-
-        if (response) {
-            setErrMsg('')
-            obj.setUserId(1)
-            navigate("/", { replace: true });
-        } else {
-            setErrMsg('Username or password are not correct')
-        }
-
+        login(username, password)
+            .then((data) => {
+                setErrMsg('')
+                obj.setUser(data.user)
+                navigate("/", { replace: true });
+            })
+            .catch(err => {
+                setErrMsg('اسم المستخدم أو كلمة المرور غير صحيحة')
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
 
     return (
@@ -38,7 +38,6 @@ export default function LoginPage() {
                 <div className="card" style={styles.login}>
                     <h5 className="card-header">تسجيل الدخول</h5>
                     <div className="card-body">
-                        {errMsg !== '' && <label>{errMsg}</label>}
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">اسم المستخدم</label>
                             <input type="text" className="form-control" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -48,8 +47,9 @@ export default function LoginPage() {
                             <label htmlFor="password" className="form-label">كلمة المرور</label>
                             <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
+                        {errMsg !== '' && <label style={{ fontSize: '0.9rem' }} className="text-danger">{errMsg}</label>}
 
-                        <button class="btn btn-primary" type="submit" disabled={isLoading}>
+                        <button className="btn btn-primary mt-2" type="submit" disabled={isLoading}>
                             {isLoading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
                             &nbsp;دخول
                         </button>
