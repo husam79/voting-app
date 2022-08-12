@@ -1,6 +1,6 @@
 import axios from "axios";
-//const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
-const API_ENDPOINT = 'http://localhost:3010/api';
+const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
+//const API_ENDPOINT = 'http://localhost:3010/api';
 
 axios.defaults.withCredentials = true;
 
