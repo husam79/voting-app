@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
+//const API_ENDPOINT = 'https://vt-api.azurewebsites.net/api';
+const API_ENDPOINT = '/api';
 //const API_ENDPOINT = 'http://localhost:3010/api';
 
 axios.defaults.withCredentials = true;
@@ -33,46 +34,19 @@ export default function dataStore() {
     }
 
     const getAllCandidatesAsync = async () => {
-        const url = API_ENDPOINT + '/candidates'
-        /* const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include'
-        });
- */
-        try {
-            const response = await axios.get(url);
+        const { data } = await axios.get(`${API_ENDPOINT}/candidates`);
 
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                return [];
-            }
-        }
-        catch (err) {
-            console.log(err.message)
-        }
+        return data;
     }
 
     const voteAsync = async (selected_candidates) => {
-        const url = API_ENDPOINT + '/voting/vote'
+        const url = `${API_ENDPOINT}/voting/vote`
 
         const selected_ids = selected_candidates.map(item => item.id)
 
-        try {
-            const response = await axios.post(url, {
-                selected_candidates: selected_ids
-            });
-
-            if (response.status === 201) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        catch (err) {
-            console.log(err)
-        }
-
+        await axios.post(url, {
+            selected_candidates: selected_ids
+        });
     }
 
     const getSelectedCandidatesAsync = async () => {

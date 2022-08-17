@@ -15,7 +15,15 @@ export default function LogoutPage() {
                 navigate('/', { replace: true });
             })
             .catch((err) => {
-                console.log('error in logout', err)
+                
+                if (err.code === 'ERR_NETWORK') {
+                    alert('توجد مشكلة في الاتصال، ربما لم يتم تسجيل خروجك بشكل صحيح، يرجى إعادة المحاولة')
+                } else if (err.response.status === 403) {
+                    navigate("/login", { replace: true });
+                } else {
+                    alert('حدثت مشكلة غير معروفة يرجى الاتصال بمدير النظام' + err.response.status)
+                    navigate("/login", { replace: true });
+                }
             })
             .finally(() => {
                 obj.setUser(null);

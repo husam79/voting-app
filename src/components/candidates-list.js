@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import CustomReactCheckbox from './custom-react-checkbox';
+import MsgBox from './msgbox';
 
 export default function CandidatesList({ candidates, onSelectionChanged }) {
     const [editCandidates, setEditCandidates] = useState(candidates);
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         setEditCandidates(candidates);
@@ -13,12 +15,13 @@ export default function CandidatesList({ candidates, onSelectionChanged }) {
 
         //prevent to select more than 7 candidates, 
         //but allow to deselect any candidate.
-        if(selectedGroup.length === 7 && isChecked){
+        if (selectedGroup.length === 7 && isChecked) {
+            setModalShow(true);
             return;
         }
 
         let tmpCandidates = editCandidates.map(item => {
-            if(item.id === id){                
+            if (item.id === id) {
                 item.is_selected = isChecked;
             }
 
@@ -32,6 +35,13 @@ export default function CandidatesList({ candidates, onSelectionChanged }) {
 
     return (
         <div style={styles.container}>
+            <MsgBox
+                title='إختيار مرشّح'
+                body='لا يمكن اختيار أكثر من 7 مرشحين'
+                type='close'
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+            />
             {editCandidates.map(item =>
                 <div key={item.id} style={styles.item}>
                     <CustomReactCheckbox isChecked={item.is_selected} id={item.id} onChanged={handleChecked} />

@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react"
 import { UserContext } from '../App';
 import { useNavigate } from "react-router-dom";
 import dataStore from "../dataStore";
+import MsgBox from "../components/msgbox";
 
 export default function ResultsPage() {
     const [results, setResults] = useState([]);
@@ -10,10 +11,34 @@ export default function ResultsPage() {
     const obj = useContext(UserContext);
     const navigate = useNavigate();
     const { getCandidatesResultAsync } = dataStore();
+    const [modalConfig, setModalConfig] = useState({
+        show: false,
+        title: '',
+        body: ''
+    });
+
+    const errorManipulaton = (err) => {
+        if (err.code === 'ERR_NETWORK') {
+            setModalConfig({
+                show: true,
+                title: 'مشكلة في الإتصال',
+                body: 'توجد مشكلة في الاتصال، حاول مجددا من فضلك'
+            })
+        } else if (err.response.status === 403) {
+            navigate("/login", { replace: true });
+        } else {
+            setModalConfig({
+                show: true,
+                title: 'مشكلة في الإتصال',
+                body: 'حدثت مشكلة غير معروفة يرجى الاتصال بمدير النظام' + err.response.status
+            })
+            navigate("/login", { replace: true });
+        }
+    }
 
     useEffect(() => {
         if (obj.user === null) {
-            navigate("login", { replace: true });
+            navigate("/login", { replace: true });
         } else {
             setIsLoading(true);
             getCandidatesResultAsync()
@@ -26,7 +51,7 @@ export default function ResultsPage() {
                     setIsLoading(false)
                 })
                 .catch(err => {
-                    console.log(err)
+                    errorManipulaton(err)
                 })
                 .finally(() => setIsLoading(false))
         }
@@ -44,6 +69,17 @@ export default function ResultsPage() {
 
     return (
         <div className="container">
+            <MsgBox
+                title={modalConfig.title}
+                body={modalConfig.body}
+                type='close'
+                show={modalConfig.show}
+                onHide={() => setModalConfig({
+                    show: false,
+                    title: '',
+                    body: ''
+                })}
+            />
             {!isLoading && showContent &&
                 <>
                     <div className="row mt-4 align-items-center justify-content-center">
