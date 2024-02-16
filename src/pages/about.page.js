@@ -6,7 +6,11 @@ export default function AboutPage() {
                     <div className="card">
                         <div className="card-title text-center" style={{fontSize:'1.8rem'}}>حول التطبيق</div>
                         <div className="card-body"> هذا التطبيق هو هدية للأخ عبد الله صديق الموقّر</div>
-                        <div className="card-fotter"> تطوير حسام برهان</div>
+                        <div className="card-fotter">
+                            <small>
+                             تطوير حسام برهان
+                             </small>
+                        </div>
                     </div>
                 </div>
             </div>
