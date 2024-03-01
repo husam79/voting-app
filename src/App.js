@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import HomePage from './pages/home.page';
-import AboutPage from './pages/about.page';
+// import AboutPage from './pages/about.page';
 import VotingPage from './pages/voting.page';
 import React, { useEffect, useState } from 'react';
 import LoginPage from './pages/login.page';

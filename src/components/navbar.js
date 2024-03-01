@@ -33,9 +33,9 @@ export default function Navbar({ activeItem }) {
                             {obj.user !== null && obj.user.is_admin && <li className="nav-item">
                                 <NavLink to='/results' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>النتائج</NavLink>
                             </li>}
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <NavLink to='/about' className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>حول</NavLink>
-                            </li>
+                            </li> */}
                         </ul>
 
                         <div className='d-flex align-items-center' >
