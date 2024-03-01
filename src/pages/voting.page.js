@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import CandidatesList from "../components/candidates-list";
 import dataStore from '../dataStore';
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function VotingPage() {
     const obj = useContext(UserContext);
     const navigate = useNavigate();
 
-    const errorManipulaton = (err) => {
+    const errorManipulaton = useCallback((err) => {
         if (err.code === 'ERR_NETWORK') {
             setModalConfig({
                 show: true,
@@ -36,7 +36,7 @@ export default function VotingPage() {
             })
             navigate("/login", { replace: true });
         }
-    }
+    }, [navigate])
 
     const handleSelectionChanged = (group) => {
         setSelectedCandidates(group);
@@ -89,7 +89,7 @@ export default function VotingPage() {
                     setIsLoading(false)
                 })
         }
-    }, []);
+    }, [errorManipulaton, getAllCandidatesAsync, getSelectedCandidatesAsync, navigate, obj.user]);
 
     let enableVoting = selectedCandidates.length <= 7 && selectedCandidates.length > 0;
 

@@ -33,7 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
-          <Route path="about" element={<AboutPage />} />
+          {/* <Route path="about" element={<AboutPage />} /> */}
           <Route path="vote" element={<VotingPage />} />
           <Route path="results" element={<ResultsPage />} />
         </Route>
